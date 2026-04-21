@@ -13,12 +13,13 @@ type Certificate = {
     encodedPath: string;
 };
 
-type ProjectCategory = 'All' | 'Company Profile' | 'Portofolio' | 'Project Generator' | 'Saas Tools';
+type ProjectCategory = 'All' | 'Company Profile';
 
 type ProjectItem = {
     title: string;
     description: string;
     imagePath: string;
+    allImages: readonly string[];
     encodedPath: string;
     category: Exclude<ProjectCategory, 'All'>;
 };
@@ -43,50 +44,62 @@ const certificateSources = [
     '/images/Certif/wadhwani/Customer Centricity (Bahasa).webp',
 ] as const;
 
-const categories: ProjectCategory[] = ['All', 'Company Profile', 'Portofolio', 'Project Generator', 'Saas Tools'];
+const categories: ProjectCategory[] = ['All', 'Company Profile'];
 
 const projectSeeds = [
     {
-        title: 'Platform Profil Perusahaan Visionary Hub',
+        title: 'Manusia AI - AI Powered Platform',
         description:
-            'Website company profile dengan narasi brand yang kuat, struktur informasi jelas, dan performa optimal untuk kebutuhan presentasi bisnis.',
-        imagePath: '/images/Certif/Belajar Membuat Front-End Web.webp',
+            'Platform inovatif berbasis AI untuk optimasi alur kerja dan kreativitas digital dengan antarmuka yang modern dan responsif.',
+        imagePath: '/images/manusiaai/main-manusia-ai.svg',
+        allImages: [
+            '/images/manusiaai/main-manusia-ai.svg',
+            '/images/manusiaai/Screenshot 2025-12-24 112115.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112153.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112234.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112441.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112532.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112624.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112710.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112823.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112851.png',
+            '/images/manusiaai/Screenshot 2025-12-24 112935.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113001.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113034.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113135.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113213.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113250.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113431.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113546.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113609.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113634.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113731.png',
+            '/images/manusiaai/Screenshot 2025-12-24 113747.png',
+            '/images/manusiaai/Screenshot 2025-12-24 114153.png',
+            '/images/manusiaai/Screenshot 2025-12-24 114223.png',
+            '/images/manusiaai/Screenshot 2025-12-24 114323.png',
+            '/images/manusiaai/Screenshot 2025-12-24 114735.png',
+            '/images/manusiaai/Screenshot 2025-12-24 115658.png',
+        ],
         category: 'Company Profile',
     },
     {
-        title: 'Portofolio Creative Studio',
+        title: 'Snap Int - Smart Integration Tool',
         description:
-            'Landing portofolio visual-first untuk menampilkan studi kasus kreatif secara sinematik dengan pengalaman scroll yang halus.',
-        imagePath: '/images/Certif/Belajar Dasar Manajemen Proyek.webp',
-        category: 'Portofolio',
-    },
-    {
-        title: 'Generator Template Dashboard',
-        description:
-            'Alat pembangkit template proyek untuk mempercepat pembuatan dashboard dengan struktur komponen siap pakai.',
-        imagePath: '/images/Certif/Introduction to Financial Literacy-Sertiv.webp',
-        category: 'Project Generator',
-    },
-    {
-        title: 'SaaS Analytics Workspace',
-        description:
-            'Aplikasi SaaS untuk monitoring performa tim dan metrik bisnis dengan panel analitik terfokus pada keputusan cepat.',
-        imagePath: '/images/Certif/Dasar Pemrograman Web.webp',
-        category: 'Saas Tools',
-    },
-    {
-        title: 'Profil Syariah Properti Digital',
-        description:
-            'Website pemasaran properti berbasis sistem katalog dinamis dan komunikasi terintegrasi untuk meningkatkan konversi leads.',
-        imagePath: '/images/Certif/Dasar Pemrograman JavaScript.webp',
+            'Solusi integrasi cerdas yang menghubungkan berbagai layanan digital dengan mudah, efisien, dan aman.',
+        imagePath: '/images/snapint/main-snapint-ai.svg',
+        allImages: [
+            '/images/snapint/main-snapint-ai.svg',
+            '/images/snapint/Screenshot 2025-12-24 115950.png',
+            '/images/snapint/Screenshot 2025-12-24 120026.png',
+            '/images/snapint/Screenshot 2025-12-24 120108.png',
+            '/images/snapint/Screenshot 2025-12-24 120152.png',
+            '/images/snapint/Screenshot 2025-12-24 120312.png',
+            '/images/snapint/Screenshot 2025-12-24 120406.png',
+            '/images/snapint/Screenshot 2025-12-24 120448.png',
+            '/images/snapint/Screenshot 2025-12-24 120500.png',
+        ],
         category: 'Company Profile',
-    },
-    {
-        title: 'Portofolio Produk Digital',
-        description:
-            'Showcase produk digital dengan pendekatan storytelling visual, aksen tipografi kuat, dan identitas brand yang konsisten.',
-        imagePath: '/images/Certif/wadhwani/Work Productivity Tools (Bahasa).webp',
-        category: 'Portofolio',
     },
 ] as const;
 
@@ -165,12 +178,15 @@ function ProjectVisualCard({
     item,
     order,
     className,
+    onOpen,
 }: {
     item: ProjectItem;
     order: number;
     className?: string;
+    onOpen: (item: ProjectItem) => void;
 }) {
     const orderLabel = order.toString().padStart(2, '0');
+    const isSvgPreview = item.imagePath.toLowerCase().endsWith('.svg');
 
     return (
         <article
@@ -179,7 +195,7 @@ function ProjectVisualCard({
             <img
                 src={item.encodedPath}
                 alt={item.title}
-                className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.06]"
+                className={`h-full w-full transition duration-500 group-hover:scale-[1.06] ${isSvgPreview ? 'object-contain bg-[hsl(var(--bg)/0.95)] p-4 md:p-6' : 'object-cover object-center'}`}
                 loading="lazy"
             />
 
@@ -200,9 +216,10 @@ function ProjectVisualCard({
                 <div className="mt-3 flex items-center gap-2">
                     <button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-black/36 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm"
+                        onClick={() => onOpen(item)}
+                        className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-black/36 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-white/10"
                     >
-                        <ExternalLink size={13} /> Detail
+                        <ExternalLink size={13} /> Lihat Detail
                     </button>
                     <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-[11px] font-medium text-white/90">
                         {item.category}
@@ -216,6 +233,7 @@ function ProjectVisualCard({
 export default function Projects() {
     const { ref, inView } = useSectionInView(0.18);
     const [activeCertificate, setActiveCertificate] = useState<Certificate | null>(null);
+    const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
     const [activeCategory, setActiveCategory] = useState<ProjectCategory>('All');
     const [isClient, setIsClient] = useState(false);
 
@@ -227,11 +245,11 @@ export default function Projects() {
         if (!isClient) {
             return;
         }
-        document.body.style.overflow = activeCertificate ? 'hidden' : '';
+        document.body.style.overflow = (activeCertificate || activeProject) ? 'hidden' : '';
         return () => {
             document.body.style.overflow = '';
         };
-    }, [activeCertificate, isClient]);
+    }, [activeCertificate, activeProject, isClient]);
 
     const filteredProjects = useMemo(() => {
         if (activeCategory === 'All') {
@@ -240,9 +258,8 @@ export default function Projects() {
         return projects.filter((item) => item.category === activeCategory);
     }, [activeCategory]);
 
-    const featuredProject = filteredProjects[0] ?? projects[0];
+    const featuredProject = filteredProjects[0];
     const rowTwo = filteredProjects.slice(1, 3);
-    const rowThree = filteredProjects.slice(3, 6);
 
     const certModal = activeCertificate ? (
         <div
@@ -279,6 +296,73 @@ export default function Projects() {
                             className="max-h-full w-auto max-w-full rounded-xl border border-borderc/55 object-contain shadow-[0_18px_42px_hsl(var(--accent)/0.18)]"
                         />
                     </div>
+                </div>
+            </div>
+        </div>
+    ) : null;
+
+    const projectModal = activeProject ? (
+        <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-[9999] grid place-items-center bg-black/85 p-4 backdrop-blur-md"
+            onClick={() => setActiveProject(null)}
+        >
+            <div
+                className="w-full max-w-6xl rounded-3xl border border-borderc/55 bg-[hsl(var(--bg)/0.98)] p-4 shadow-[0_32px_80px_rgba(0,0,0,0.5)] md:p-8 dark:bg-zinc-950/90"
+                onClick={(event) => event.stopPropagation()}
+            >
+                <div className="mb-6 flex items-start justify-between gap-6">
+                    <div>
+                        <div className="flex items-center gap-3">
+                            <span className="rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+                                {activeProject.category}
+                            </span>
+                        </div>
+                        <h3 className="mt-3 text-2xl font-black tracking-tight text-text md:text-4xl">
+                            {activeProject.title}
+                        </h3>
+                        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-text/70 md:text-base">
+                            {activeProject.description}
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setActiveProject(null)}
+                        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-borderc/65 bg-surface/40 text-text/80 transition hover:scale-110 hover:border-accent/80 hover:text-accent"
+                        aria-label="Tutup popup"
+                    >
+                        <X size={22} />
+                    </button>
+                </div>
+
+                <div className="no-scrollbar max-h-[65vh] overflow-y-auto rounded-2xl border border-borderc/65 bg-surface/20 p-4 md:p-6">
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {activeProject.allImages.map((img, idx) => (
+                            <div
+                                key={idx}
+                                className="group relative aspect-video overflow-hidden rounded-xl border border-borderc/40 bg-black/20 transition-all hover:border-accent/50 hover:shadow-lg"
+                            >
+                                <img
+                                    src={encodeURI(img)}
+                                    alt={`${activeProject.title} screenshot ${idx + 1}`}
+                                    className={`h-full w-full transition duration-500 group-hover:scale-105 ${img.toLowerCase().endsWith('.svg') ? 'object-contain bg-[hsl(var(--bg)/0.95)] p-3' : 'object-cover object-top'}`}
+                                    loading="lazy"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-6 flex justify-end">
+                    <button
+                        onClick={() => setActiveProject(null)}
+                        className="rounded-xl bg-text px-6 py-3 text-sm font-bold text-bg transition hover:opacity-90"
+                    >
+                        Tutup Galeri
+                    </button>
                 </div>
             </div>
         </div>
@@ -349,35 +433,22 @@ export default function Projects() {
                                 item={featuredProject}
                                 order={1}
                                 className="h-[300px] md:h-[520px]"
+                                onOpen={setActiveProject}
                             />
                         )}
 
                         <div className="grid gap-4 md:grid-cols-2 md:gap-5">
                             {rowTwo.map((item, index) => (
-                                <ProjectVisualCard key={item.title} item={item} order={index + 2} className="h-[220px] md:h-[300px]" />
+                                <ProjectVisualCard key={item.title} item={item} order={index + 2} className="h-[220px] md:h-[300px]" onOpen={setActiveProject} />
                             ))}
-                            {rowTwo.length === 0 && (
-                                <div className="rounded-2xl border border-borderc/55 bg-surface/25 p-6 text-sm text-text/70 md:col-span-2">
-                                    Belum ada project pada kategori ini.
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="grid gap-4 md:grid-cols-3 md:gap-5">
-                            {rowThree.map((item, index) => (
-                                <ProjectVisualCard key={item.title} item={item} order={index + 4} className="h-[210px] md:h-[260px]" />
-                            ))}
-                            {rowThree.length === 0 && (
-                                <div className="rounded-2xl border border-borderc/55 bg-surface/25 p-6 text-sm text-text/70 md:col-span-3">
-                                    Tambahkan lebih banyak project untuk menampilkan baris ketiga.
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
             </section>
 
             {isClient && certModal ? createPortal(certModal, document.body) : null}
+            {isClient && projectModal ? createPortal(projectModal, document.body) : null}
         </>
     );
 }
+
