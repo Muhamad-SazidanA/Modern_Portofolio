@@ -14,7 +14,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-    title: 'Antigravity Portfolio',
+    title: 'Sazidan Portofolio',
     description: 'Modern single page portfolio with fluid theming and floating interactions.',
     icons: {
         icon: '/favicon.svg',

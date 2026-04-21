@@ -34,7 +34,7 @@ export default function Navbar() {
             <nav className="mx-auto mt-4 flex h-16 w-[min(960px,94vw)] items-center justify-between rounded-2xl border border-borderc/40 bg-surface/30 px-4 backdrop-blur-md">
                 <a href="#home" className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-text">
                     <Sparkles size={16} className="text-accent" />
-                    Antigravity
+                    Sza
                 </a>
 
                 <div className="hidden items-center gap-1 md:flex">
